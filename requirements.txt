@@ -1,0 +1,14 @@
+numpy
+pandas
+requests
+psycopg2-binary
+python-dotenv
+scipy
+scikit-learn
+umap-learn
+hdbscan
+matplotlib
+seaborn
+kneed
+tqdm
+ipykernel
