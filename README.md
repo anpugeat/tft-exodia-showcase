@@ -105,9 +105,9 @@ tft-exodia/
 │    ├── modelling/
 │    │   ├── preprocessing.py        # board cleaning and feature prep
 │    │   ├── clustering.py           # UMAP + HDBSCAN pipeline 
-│    │   ├── clustering_cleanup.py   # cleans up clustering                           [private]
-│    │   ├── comp_accessory_stats.py # composition performance statistics             [private]
-│    │   └── unit_stats.py           # individual unit performance statistics         [private]
+│    │   ├── clustering_cleanup.py   # cleans up clustering                       [private]
+│    │   ├── comp_accessory_stats.py # composition performance statistics         [private]
+│    │   └── unit_stats.py           # individual unit performance statistics     [private]
 │    └── version_control/
 │        └── versions.py             # daily tracking
 │
