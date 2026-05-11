@@ -121,9 +121,9 @@ tft-exodia/
 
 ## A note on this repository
 
-This is a showcase version of the project codebase — not the complete source. Several modules are kept private, including the cluster post-processing logic, the tier list calculation methodology, and certain tuned hyperparameters. This is intentional: I plan to monetise the project, and these components represent the core analytical work behind it. Where parameters have been redacted, you'll find inline comments noting this.
+This is a showcase version of the project codebase — not the complete source. Several modules are kept private, including the cluster post-processing logic, the tier list calculation methodology, and certain tuned hyperparameters. I plan to eventually take this further and monetise the project, and therefore have kept the important files hidden from the repo. 
 
-The full pipeline runs in production at [TFTExodia.com](https://tftexodia.com). I'm happy to walk through the omitted components in interviews or technical conversations.
+The full pipeline runs in production at [TFTExodia.com](https://tftexodia.com). I would be happy to walk through the remaining files in interviews or technical conversations.
 
 ## Running locally
 
