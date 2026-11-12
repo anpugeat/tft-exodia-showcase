@@ -17,7 +17,7 @@ TFT Exodia automatically tracks the highest-ranked TFT players in the world (Cha
 - Calculates carry playrates, best-in-slot item builds, and per-unit tier rankings
 - Tracks how the meta shifts day-by-day across patches
 
-The full pipeline runs autonomously on a daily schedule. Results are published to the live site.
+The full pipeline runs autonomously every day, scheduled by Apache Airflow. Results are published to the live site.
 
 ## Architecture
 
@@ -31,11 +31,12 @@ graph LR
     F --> G[Statistics<br/>& Tier Lists]
     G --> H[CSV Exports]
     H --> I[Next.js Frontend <br/>Vercel]
+    S([Apache Airflow<br/>daily DAG]) -.-> B
 ```
 
 
 
-`cron` triggers `run_tft.sh`, which executes the scrape → analyse → export workflow inside an isolated virtualenv and pipes all output to a rotating log file for monitoring.
+An **Apache Airflow** DAG triggers the scrape → analyse → export workflow once a day. The project runs inside a **Docker** container, so every run uses the same reproducible environment, and Airflow's run history and task logs are used for monitoring.
 
 ## Tech stack
 
@@ -46,7 +47,7 @@ graph LR
 | Storage        | PostgreSQL, `psycopg2`                                     |
 | ML / analytics | `scikit-learn`, `umap-learn`, `hdbscan`, `pandas`, `numpy` |
 | Frontend       | TypeScript, Next.js (React 19), Tailwind CSS, Vercel       |
-| Orchestration  | Bash, `cron`, Python virtualenv                            |
+| Orchestration  | Apache Airflow, Docker                                     |
 | Visualisation  | `matplotlib` (internal), web frontend (live site)          |
 
 
@@ -89,10 +90,14 @@ Cascading deletes mean a single `DELETE FROM matches WHERE ...` correctly cleans
 
 ```
 tft-exodia/
-├── main.py                         # pipeline orchestrator
-├── run_tft.sh                      # cron-friendly entry point
+├── main.py                         # pipeline entry point
+├── Dockerfile                      # container image for the pipeline
+├── docker-compose.yaml             # Airflow services
 ├── requirements.txt
 ├── .env.example                    # example .env
+│
+├── dags/
+│    └── tft_pipeline_dag.py         # Airflow DAG: daily scrape → analyse → export
 │
 ├── src/
 │    ├── config.example.py           # template for credentials (real config is gitignored)
@@ -144,7 +149,7 @@ cp src/config.example.py src/config.py    # analysis hyperparameters
 python main.py
 ```
 
-A running PostgreSQL instance and a Riot Games API key will be needed.
+A running PostgreSQL instance and a Riot Games API key will be needed. In production, the same pipeline runs inside Docker and is scheduled daily by Airflow rather than launched by hand.
 
 ## Contact
 
